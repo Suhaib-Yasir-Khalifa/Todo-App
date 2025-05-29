@@ -9,32 +9,36 @@ import {
 } from '@/components/ui/dialog'
 import { useState, useEffect } from 'react'
 import { Moon, Pen, Sun, Trash } from 'lucide-react'
-import useTodos from './hooks/useTodos'
 import { Input } from './components/ui/input'
 import { Button } from './components/ui/button'
 import { Checkbox } from './components/ui/checkbox'
 import { cn } from './lib/utils'
-
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { z } from 'zod'
-
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
-
 import { format } from 'date-fns'
+import useTodoOperations from './Atoms/useTodoOperations'
+import useGetTodos from './Atoms/useGetTodos'
+import { useAtomValue } from 'jotai'
+import { todoList } from './Atoms/useGetTodos'
+
+/**____________________________________________________
+ *
+ */
 
 const mySchema = z.object({
   tag: z.string().min(1).max(10),
   content: z.string().min(1)
 })
-
 function App(): React.JSX.Element {
+  useGetTodos()
+
   const [isDark, setIsDark] = useState(true)
   const [openDialog, setOpenDialog] = useState(false)
   const [updateTodoId, setUpdateTodoId] = useState<string | null>(null)
-
-  const { todos, addTodo, deleteTodo, updateTodo } = useTodos()
+  const comingData = useAtomValue(todoList)
+  const { addTodo, deleteTodo, updateTodo } = useTodoOperations()
 
   const form = useForm<z.infer<typeof mySchema>>({
     resolver: zodResolver(mySchema),
@@ -46,7 +50,10 @@ function App(): React.JSX.Element {
 
   async function onSubmit(values: z.infer<typeof mySchema>) {
     if (updateTodoId) await updateTodo(updateTodoId, values)
-    else await addTodo({ ...values, completed: false, createdAt: new Date().getTime() })
+    else {
+      await addTodo({ ...values, completed: false, createdAt: new Date().getTime() })
+    }
+
     setOpenDialog(false)
   }
 
@@ -148,6 +155,7 @@ function App(): React.JSX.Element {
                       {/* <DialogClose asChild> */}
                       <Button
                         type="submit"
+
                         // disabled={tagValue.trim() === '' || content.trim() === ''}
                         // onClick={() => {
                         //   if (updateTodoId) editTode()
@@ -174,7 +182,7 @@ function App(): React.JSX.Element {
             >
               Add Todo
             </Button>
-            {todos.map((item) => {
+            {comingData.map((item) => {
               return (
                 <div
                   key={item.id}
