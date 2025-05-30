@@ -18,10 +18,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { format } from 'date-fns'
-import useTodoOperations from './Atoms/useTodoOperations'
-import useGetTodos from './Atoms/useGetTodos'
 import { useAtomValue } from 'jotai'
-import { todoList } from './Atoms/useGetTodos'
+import useTodos from './hooks/useTodo'
 
 /**____________________________________________________
  *
@@ -32,13 +30,10 @@ const mySchema = z.object({
   content: z.string().min(1)
 })
 function App(): React.JSX.Element {
-  useGetTodos()
-
   const [isDark, setIsDark] = useState(true)
   const [openDialog, setOpenDialog] = useState(false)
   const [updateTodoId, setUpdateTodoId] = useState<string | null>(null)
-  const comingData = useAtomValue(todoList)
-  const { addTodo, deleteTodo, updateTodo } = useTodoOperations()
+  const { todos, addTodo, deleteTodo, updateTodo } = useTodos()
 
   const form = useForm<z.infer<typeof mySchema>>({
     resolver: zodResolver(mySchema),
@@ -182,7 +177,7 @@ function App(): React.JSX.Element {
             >
               Add Todo
             </Button>
-            {comingData.map((item) => {
+            {todos.map((item) => {
               return (
                 <div
                   key={item.id}
