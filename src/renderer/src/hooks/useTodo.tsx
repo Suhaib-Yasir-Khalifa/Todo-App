@@ -1,11 +1,14 @@
 import { useEffect, useCallback } from 'react'
 import { debounce } from 'lodash'
-import { todosAtom } from '@/state/todos'
-import { useAtom } from 'jotai'
+import { todosAtom, todoAtomsAtom } from '@/state/todos'
+import { PrimitiveAtom, useAtom, useSetAtom } from 'jotai'
+
 /**_____________________________________________________________ */
 
 export default function useTodos() {
-  const [todos, setTodos] = useAtom(todosAtom)
+  const setTodos = useSetAtom(todosAtom)
+  const [toodsAtoms, dispatch] = useAtom(todoAtomsAtom)
+
   useEffect(() => {
     const fun = async () => {
       const res = await window.api.gettingTododsList()
@@ -14,12 +17,12 @@ export default function useTodos() {
     fun()
     // eslint-disable-next-line
   }, [])
-
+  // eslint-disable-next-line
   const addTodo = useCallback(
     debounce(
       async (todo: Omit<Todo, 'id'>) => {
         const newTodo = await window.api.addTodo(todo)
-        setTodos((prev) => [newTodo, ...prev])
+        dispatch({ type: 'insert', value: newTodo })
       },
       500,
       { leading: true, trailing: false }
@@ -28,9 +31,9 @@ export default function useTodos() {
     []
   )
 
-  async function deleteTodo(id: string) {
+  async function deleteTodo(atom: PrimitiveAtom<Todo>, id: string) {
     await window.api.deleteTodo(id)
-    setTodos(todos.filter((todo) => todo.id !== id))
+    dispatch({ type: 'remove', atom })
   }
 
   async function updateTodo(id: string, updatedValue: Partial<Todo>) {
@@ -47,7 +50,7 @@ export default function useTodos() {
   }
 
   return {
-    todos,
+    toodsAtoms,
     addTodo,
     deleteTodo,
     updateTodo
