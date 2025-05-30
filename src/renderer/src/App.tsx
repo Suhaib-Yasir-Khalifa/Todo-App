@@ -18,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { format } from 'date-fns'
-import { useAtomValue } from 'jotai'
 import useTodos from './hooks/useTodo'
 
 /**____________________________________________________
@@ -88,7 +87,7 @@ function App(): React.JSX.Element {
 
         <div className="flex flex-col space-y-1 select-non ">
           <div className="font-extrabold text-[3.6rem]">Hello..</div>
-          <div className="font-bold text-[2.1rem]  ">Let's Create Discipline</div>
+          <div className="font-bold text-[2.1rem]  ">Let&apos;s Create Discipline</div>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback } from 'react'
 import { debounce } from 'lodash'
 import { todosAtom } from '@/state/todos'
 import { useAtom } from 'jotai'
@@ -12,6 +12,7 @@ export default function useTodos() {
       setTodos(res)
     }
     fun()
+    // eslint-disable-next-line
   }, [])
 
   const addTodo = useCallback(
