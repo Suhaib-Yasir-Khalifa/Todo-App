@@ -58,8 +58,22 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
+  // IPC
 
+  // Store
+  ipcMain.on('electron-store-get', async (event, val) => {
+    event.returnValue = store.get(val) || null
+  })
+
+  ipcMain.on('electron-store-set', async (_, key, val) => {
+    store.set(key, val)
+  })
+
+  ipcMain.on('electron-store-remove', async (_, key) => {
+    store.delete(key)
+  })
+
+  // Todos
   ipcMain.handle('add-todo', (_event, obj: Todo) => {
     const prev: Todo[] = store.get('todos-list')
     const newTodo = { ...obj, id: crypto.randomUUID(), completed: false }
@@ -75,7 +89,7 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('delete-todo', (_, id) => {
-    let prev: Todo[] = store.get('todos-list')
+    const prev: Todo[] = store.get('todos-list')
 
     const update = prev.filter((todo) => todo.id !== id)
 
@@ -83,7 +97,7 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('set-todo', (_, id, target) => {
-    let prev: Todo[] = store.get('todos-list')
+    const prev: Todo[] = store.get('todos-list')
     const update = prev.map((todo) => {
       if (todo.id === id) {
         return target
@@ -94,7 +108,7 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('update-todo', (_, id, updaetdValues) => {
-    let prev: Todo[] = store.get('todos-list')
+    const prev: Todo[] = store.get('todos-list')
     const update = prev.map((todo) => {
       if (todo.id === id) {
         return { ...todo, ...updaetdValues }

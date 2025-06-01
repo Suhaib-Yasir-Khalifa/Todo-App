@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogTrigger,
   DialogClose,
   DialogContent,
   DialogDescription,
@@ -12,14 +13,29 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { useEffect, useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+
+import {} from 'jotai/utils'
 
 const mySchema = z.object({
   tag: z.string().min(1).max(10),
   content: z.string().min(1)
 })
 
-function DialogPoping() {
+function DialogPoping({
+  children,
+  addTodo,
+  todo,
+  setTodo
+}: {
+  children: React.ReactNode
+  addTodo?: (todo: Omit<Todo, 'id'>) => void
+  todo?: Todo
+  setTodo?: React.Dispatch<React.SetStateAction<Todo>>
+}) {
   const [openDialog, setOpenDialog] = useState(false)
+
   const form = useForm<z.infer<typeof mySchema>>({
     resolver: zodResolver(mySchema),
     defaultValues: {
@@ -29,11 +45,14 @@ function DialogPoping() {
   })
 
   async function onSubmit(values: z.infer<typeof mySchema>) {
-    if (updateTodoId) await updateTodo(updateTodoId, values)
-    else {
-      await addTodo({ ...values, completed: false, createdAt: new Date().getTime() })
+    console.log(values)
+    if (todo && setTodo) {
+      console.log('updateing with ', { ...todo, ...values })
+      setTodo({ ...todo, ...values })
+    } else {
+      if (!addTodo) throw new Error('provie addtod')
+      addTodo({ ...values, completed: false, createdAt: new Date().getTime() })
     }
-
     setOpenDialog(false)
   }
 
@@ -48,16 +67,22 @@ function DialogPoping() {
           }),
         300
       )
-  }, [openDialog])
+    else if (openDialog && todo)
+      form.reset({
+        tag: todo.tag,
+        content: todo.content
+      })
+  }, [form, openDialog, todo])
 
   return (
     <div>
       {' '}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="text-foreground">
-              {updateTodoId ? 'Update Your Todo' : 'Add Your Todo'}
+              {todo ? 'Update Your Todo' : 'Add Your Todo'}
             </DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
@@ -100,11 +125,11 @@ function DialogPoping() {
 
                   // disabled={tagValue.trim() === '' || content.trim() === ''}
                   // onClick={() => {
-                  //   if (updateTodoId) editTode()
+                  //   if (todo) editTode()
                   //   else handleNewObj()
                   // }}
                 >
-                  {updateTodoId ? 'Update Todo' : 'Add Todo'}
+                  {todo ? 'Update Todo' : 'Add Todo'}
                 </Button>
                 {/* </DialogClose> */}
               </DialogFooter>

@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
 import { Moon, Sun } from 'lucide-react'
-import { Input } from './components/ui/input'
 import { Button } from './components/ui/button'
 import { format } from 'date-fns'
 import useTodos from './hooks/useTodo'
 import TodoItem from './components/TodoItem'
+import DialogPoping from './components/DialogPoping'
 
 function App(): React.JSX.Element {
   const [isDark, setIsDark] = useState(true)
-  const [updateTodoId, setUpdateTodoId] = useState<string | null>(null)
-  const { toodsAtoms, deleteTodo } = useTodos()
+  const { toodsAtoms, deleteTodo, addTodo } = useTodos()
 
   useEffect(() => {
     if (isDark) document.body.classList.add('dark')
@@ -48,16 +47,17 @@ function App(): React.JSX.Element {
       <div className="flex flex-col justify-center items-center ">
         <div className="w-[70%] h-max px-5 py-3 flex flex-col justify-center items-center">
           <div className="h-max  space-y-3 flex flex-col w-[52rem] justify-center items-center pt-[3rem]">
-            <Button
-              variant="outline"
-              className="w-full justify-start h-20 text-xl text-primary"
-              onClick={() => {
-                setUpdateTodoId(null)
-                setOpenDialog(true)
-              }}
-            >
-              Add Todo
-            </Button>
+            <div className="w-full h-max">
+              <DialogPoping addTodo={addTodo}>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start h-20 text-xl text-primary"
+                >
+                  Add Todo
+                </Button>
+              </DialogPoping>
+            </div>
+
             {toodsAtoms.map((todoAtom) => {
               return (
                 <TodoItem key={todoAtom.toString()} todoAtom={todoAtom} deleteTodo={deleteTodo} />

@@ -4,6 +4,7 @@ import { PrimitiveAtom, useAtom } from 'jotai'
 import { Button } from './ui/button'
 import { Pen, Trash } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import DialogPoping from './DialogPoping'
 
 function TodoItem({
   todoAtom,
@@ -43,21 +44,12 @@ function TodoItem({
       </div>
       <div className="flex flex-col h-full justify-between">
         <div className="flex flex-row space-x-1 ml-auto w-max ">
-          <Button
-            variant="ghost"
-            size="icon"
-            // onClick={() => {
-            //   setUpdateTodoId(todo.id)
-            //   form.reset({
-            //     content: todo.content,
-            //     tag: todo.tag
-            //   })
-            //   setOpenDialog(true)
-            // }}
-            className="hover:text-blue-400 "
-          >
-            <Pen />
-          </Button>
+          <DialogPoping todo={todo} setTodo={setTodo}>
+            <Button variant="ghost" size="icon" className="hover:text-blue-400 ">
+              <Pen />
+            </Button>
+          </DialogPoping>
+
           <Button
             variant="ghost"
             size="icon"
