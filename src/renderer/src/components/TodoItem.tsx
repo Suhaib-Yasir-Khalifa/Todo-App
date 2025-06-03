@@ -11,7 +11,7 @@ function TodoItem({
   deleteTodo
 }: {
   todoAtom: PrimitiveAtom<Todo>
-  deleteTodo: (atom: PrimitiveAtom<Todo>, id: string) => Promise<void>
+  deleteTodo: (atom: PrimitiveAtom<Todo>) => Promise<void>
 }) {
   const [todo, setTodo] = useAtom(todoAtom)
   return (
@@ -53,7 +53,7 @@ function TodoItem({
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => deleteTodo(todoAtom, todo.id)}
+            onClick={() => deleteTodo(todoAtom)}
             className="hover:text-red-400 "
           >
             <Trash />

@@ -1,5 +1,5 @@
-import { atom } from 'jotai'
 import { splitAtom } from 'jotai/utils'
+import { atomWithLocalStorage } from '.'
 
-export const todosAtom = atom<Todo[]>([])
+export const todosAtom = atomWithLocalStorage<Todo[]>('todo-list', [])
 export const todoAtomsAtom = splitAtom(todosAtom)

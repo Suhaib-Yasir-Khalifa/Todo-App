@@ -76,10 +76,9 @@ app.whenReady().then(() => {
   // Todos
   ipcMain.handle('add-todo', (_event, obj: Todo) => {
     const prev: Todo[] = store.get('todos-list')
-    const newTodo = { ...obj, id: crypto.randomUUID(), completed: false }
 
-    store.set('todos-list', [newTodo, ...prev])
-    return newTodo
+    store.set('todos-list', [obj, ...prev])
+    return obj
   })
 
   ipcMain.handle('get-todos', async () => {
