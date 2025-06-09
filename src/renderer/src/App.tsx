@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import useTodos from './hooks/useTodo'
 import TodoItem from './components/TodoItem'
 import DialogPoping from './components/DialogPoping'
+import CalendarFilter from './components/CalendarFilter'
 
 function App(): React.JSX.Element {
   const [isDark, setIsDark] = useState(true)
@@ -44,8 +45,8 @@ function App(): React.JSX.Element {
         )}
       </div>
 
-      <div className="flex flex-col justify-center items-center ">
-        <div className="w-[70%] h-max px-5 py-3 flex flex-col justify-center items-center">
+      <div className="flex flex-wrap justify-center items-center ">
+        <div className="w-[70%]  h-max px-5 py-3 flex flex-col justify-center items-center">
           <div className="h-max  space-y-3 flex flex-col w-[52rem] justify-center items-center pt-[3rem]">
             <div className="w-full h-max">
               <DialogPoping addTodo={addTodo}>
@@ -64,6 +65,9 @@ function App(): React.JSX.Element {
               )
             })}
           </div>
+        </div>
+        <div>
+          <CalendarFilter />
         </div>
       </div>
     </main>

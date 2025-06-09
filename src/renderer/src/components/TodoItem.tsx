@@ -5,6 +5,7 @@ import { Button } from './ui/button'
 import { Pen, Trash } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import DialogPoping from './DialogPoping'
+import useCalndarFilter from '@/hooks/useCalendarFilter'
 
 function TodoItem({
   todoAtom,
@@ -14,6 +15,21 @@ function TodoItem({
   deleteTodo: (atom: PrimitiveAtom<Todo>) => Promise<void>
 }) {
   const [todo, setTodo] = useAtom(todoAtom)
+  const { isTodoInRange } = useCalndarFilter(todo)
+  // const isTodoInRange = useMemo(() => {
+  //   if (dateRange && dateRange.from && dateRange.to) {
+  //     if (todo.createdAt > dateRange.from.getTime() && todo.createdAt < dateRange.to.getTime()) {
+  //       return true
+  //     } else return false
+  //   }
+  //   return true
+  // }, [dateRange, todo.createdAt])
+
+  // console.log(todo)
+  if (!isTodoInRange) {
+    return null
+  }
+
   return (
     <div
       key={todo.id}
