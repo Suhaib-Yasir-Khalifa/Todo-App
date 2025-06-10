@@ -16,16 +16,6 @@ function TodoItem({
 }) {
   const [todo, setTodo] = useAtom(todoAtom)
   const { isTodoInRange } = useCalndarFilter(todo)
-  // const isTodoInRange = useMemo(() => {
-  //   if (dateRange && dateRange.from && dateRange.to) {
-  //     if (todo.createdAt > dateRange.from.getTime() && todo.createdAt < dateRange.to.getTime()) {
-  //       return true
-  //     } else return false
-  //   }
-  //   return true
-  // }, [dateRange, todo.createdAt])
-
-  // console.log(todo)
   if (!isTodoInRange) {
     return null
   }
