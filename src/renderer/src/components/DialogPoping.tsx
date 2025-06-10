@@ -84,7 +84,9 @@ function DialogPoping({
             <DialogTitle className="text-foreground">
               {todo ? 'Update Your Todo' : 'Add Your Todo'}
             </DialogTitle>
-            <DialogDescription></DialogDescription>
+            <DialogDescription>
+              {todo ? 'U can always change the plan' : 'Add new missions, be better'}
+            </DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -120,17 +122,7 @@ function DialogPoping({
                   <Button variant="secondary">Cancel</Button>
                 </DialogClose>
                 {/* <DialogClose asChild> */}
-                <Button
-                  type="submit"
-
-                  // disabled={tagValue.trim() === '' || content.trim() === ''}
-                  // onClick={() => {
-                  //   if (todo) editTode()
-                  //   else handleNewObj()
-                  // }}
-                >
-                  {todo ? 'Update Todo' : 'Add Todo'}
-                </Button>
+                <Button type="submit">{todo ? 'Update Todo' : 'Add Todo'}</Button>
                 {/* </DialogClose> */}
               </DialogFooter>
             </form>
