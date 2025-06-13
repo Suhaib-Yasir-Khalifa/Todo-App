@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react'
-import { Moon, Sun } from 'lucide-react'
+import { Calendar, Moon, Sun } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { format } from 'date-fns'
 import useTodos from './hooks/useTodo'
 import TodoItem from './components/TodoItem'
 import DialogPoping from './components/DialogPoping'
 import CalendarFilter from './components/CalendarFilter'
+import { cn } from './lib/utils'
+import { useAtom } from 'jotai'
+import { isCalendarSidebarAtom } from './state/todos'
 
 function App(): React.JSX.Element {
   const [isDark, setIsDark] = useState(true)
   const { toodsAtoms, deleteTodo, addTodo } = useTodos()
+  const [IsCalendarOpen, setIsCalendarOpen] = useAtom(isCalendarSidebarAtom)
 
   useEffect(() => {
     if (isDark) document.body.classList.add('dark')
@@ -48,7 +52,7 @@ function App(): React.JSX.Element {
       <div className="flex flex-wrap justify-center items-center ">
         <div className="w-[70%]  h-max px-5 py-3 flex flex-col justify-center items-center">
           <div className="h-max  space-y-3 flex flex-col w-[52rem] justify-center items-center pt-[3rem]">
-            <div className="w-full h-max">
+            <div className="lg:w-full sm:w-3/4 h-max">
               <DialogPoping addTodo={addTodo}>
                 <Button
                   variant="outline"
@@ -67,7 +71,25 @@ function App(): React.JSX.Element {
           </div>
         </div>
         <div>
-          <CalendarFilter />
+          <CalendarFilter additionalClasses={'sm:hidden lg:flex'} />
+          <div onClick={() => setIsCalendarOpen(!IsCalendarOpen)}>
+            <Calendar
+              className={cn(
+                'font-extrabold w-10 h-10 p-1 sm:absolute lg:hidden top-26 cursor-pointer right-10 rounded-sm hover:bg-secondary'
+              )}
+            />
+          </div>
+          <div
+            onClick={() => {
+              setIsCalendarOpen(false)
+            }}
+            className={cn(
+              !IsCalendarOpen ? 'opacity-0 z-[-1] scale-75' : 'opacity-100 z-[100] scale-100',
+              'transition-all lg:opacity-0 lg:z-[-1] duration-200 ease-in-out w-full h-full absolute  flex justify-center items-center top-0 left-0 backdrop-blur-[3px]'
+            )}
+          >
+            <CalendarFilter />
+          </div>
         </div>
       </div>
     </main>

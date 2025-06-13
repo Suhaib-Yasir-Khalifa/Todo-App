@@ -16,7 +16,7 @@ const useCalndarFilter = (todo: Todo) => {
     return true
   }, [dateRange, todo.createdAt])
 
-  return { isTodoInRange }
+  return isTodoInRange
 }
 
 export default useCalndarFilter

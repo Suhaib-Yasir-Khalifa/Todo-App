@@ -4,7 +4,7 @@ import { calendarAtom } from '@/state/todos'
 import { cn } from '@/lib/utils'
 import { useEffect } from 'react'
 
-function CalendarFilter() {
+function CalendarFilter({ additionalClasses }: { additionalClasses?: string }) {
   const [date, setDate] = useAtom(calendarAtom)
   useEffect(() => console.log(date), [date])
 
@@ -13,7 +13,7 @@ function CalendarFilter() {
       mode="range"
       selected={date}
       onSelect={setDate}
-      className={cn('rounded-md border shadow-sm static')}
+      className={cn('rounded-md border shadow-sm ', additionalClasses)}
       captionLayout="dropdown"
     />
   )

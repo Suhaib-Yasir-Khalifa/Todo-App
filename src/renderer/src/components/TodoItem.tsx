@@ -15,7 +15,7 @@ function TodoItem({
   deleteTodo: (atom: PrimitiveAtom<Todo>) => Promise<void>
 }) {
   const [todo, setTodo] = useAtom(todoAtom)
-  const { isTodoInRange } = useCalndarFilter(todo)
+  const isTodoInRange = useCalndarFilter(todo)
   if (!isTodoInRange) {
     return null
   }
@@ -23,7 +23,7 @@ function TodoItem({
   return (
     <div
       key={todo.id}
-      className={`bg-secondary transition-all overflow-hidden flex gap-8 ustify-between items-center  h-max pr-[3rem] pl-[1rem] py-[1rem] rounded-xl w-[52rem]`}
+      className={`bg-secondary transition-all overflow-hidden flex gap-8 ustify-between items-center  h-max pr-[3rem] pl-[1rem] py-[1rem] rounded-xl lg:w-[52rem] sm:w-3/4`}
     >
       <div
         className={` font-extrabold flex-1 overflow-hidden flex items-center gap-8 text-left text-[2rem]`}
@@ -51,7 +51,7 @@ function TodoItem({
       <div className="flex flex-col h-full justify-between">
         <div className="flex flex-row space-x-1 ml-auto w-max ">
           <DialogPoping todo={todo} setTodo={setTodo}>
-            <Button variant="ghost" size="icon" className="hover:text-blue-400 ">
+            <Button variant="ghost" size="icon" className="hover:text-blue-400 cursor-pointer">
               <Pen />
             </Button>
           </DialogPoping>
@@ -60,7 +60,7 @@ function TodoItem({
             variant="ghost"
             size="icon"
             onClick={() => deleteTodo(todoAtom)}
-            className="hover:text-red-400 "
+            className="hover:text-red-400 cursor-pointer "
           >
             <Trash />
           </Button>
