@@ -4,7 +4,7 @@ import { calendarAtom } from '@/state/todos'
 import { cn } from '@/lib/utils'
 import { useEffect } from 'react'
 
-function CalendarFilter({ additionalClasses }: { additionalClasses?: string }) {
+function CalendarFilter({ additionalClasses }: { additionalClasses?: any }) {
   const [date, setDate] = useAtom(calendarAtom)
   useEffect(() => console.log(date), [date])
 

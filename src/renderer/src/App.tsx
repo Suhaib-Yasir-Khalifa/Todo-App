@@ -84,8 +84,8 @@ function App(): React.JSX.Element {
               setIsCalendarOpen(false)
             }}
             className={cn(
-              !IsCalendarOpen ? 'opacity-0 z-[-1] scale-75' : 'opacity-100 z-[100] scale-100',
-              'transition-all lg:opacity-0 lg:z-[-1] duration-200 ease-in-out w-full h-full absolute  flex justify-center items-center top-0 left-0 backdrop-blur-[3px]'
+              !IsCalendarOpen ? 'opacity-0 z-[-1] ' : 'opacity-100 z-[100] ',
+              'transition-all lg:opacity-0 lg:z-[-1] duration-200 ease-in-out w-full h-full absolute  flex justify-center items-center top-0 left-0 bg-secondary/50 backdrop-blur-[2px]'
             )}
           >
             <CalendarFilter />
